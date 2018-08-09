@@ -229,7 +229,7 @@ void recursiveReverse(struct Node** head_ref)
 }
 
 
-void reverse()
+void reverse(struct Node** head_ref)
 {
     // Initialize current, previous and
     // next pointers
@@ -250,4 +250,316 @@ void reverse()
         current = next;
     }
     head = prev;
+}
+
+/* Function to get the middle of the linked list*/
+void printMiddle(struct Node *head)
+{
+    struct Node *slow_ptr = head;
+    struct Node *fast_ptr = head;
+ 
+    if (head!=NULL)
+    {
+        while (fast_ptr != NULL && fast_ptr->next != NULL)
+        {
+            fast_ptr = fast_ptr->next->next;
+            slow_ptr = slow_ptr->next;
+        }
+        printf("The middle element is [%d]\n\n", slow_ptr->data);
+    }
+}
+
+
+// This function rotates a linked list counter-clockwise and 
+// updates the head. The function assumes that k is smaller 
+// than size of linked list. It doesn't modify the list if 
+// k is greater than or equal to size
+
+void rotate(struct Node **head_ref, int k)
+{
+    if (k == 0)
+        return;
+ 
+    struct Node* current = *head_ref;
+
+    int count = 1;
+    while (count < k && current != NULL)
+    {
+        current = current->next;
+        count++;
+    }
+ 
+    if (current == NULL)
+        return;
+ 
+    struct Node *kthNode = current;
+
+    while (current->next != NULL)
+        current = current->next;
+ 
+    current->next = *head_ref;
+ 
+    *head_ref = kthNode->next;
+ 
+    kthNode->next = NULL;
+}
+
+struct Node* SortedMerge(struct Node* a, struct Node* b) 
+{
+    struct Node* result = NULL;
+   
+    /* Base cases */
+    if (a == NULL) 
+        return(b);
+    else if (b==NULL) 
+        return(a);
+   
+    /* Pick either a or b, and recur */
+    if (a->data <= b->data) 
+    {
+        result = a;
+        result->next = SortedMerge(a->next, b);
+    }
+    else
+    {
+        result = b;
+        result->next = SortedMerge(a, b->next);
+    }
+    return(result);
+}
+
+int getIntesectionNode(struct Node* head1, struct Node* head2)
+{
+  int c1 = getCount(head1);
+  int c2 = getCount(head2);
+  int d;
+ 
+  if(c1 > c2)
+  {
+    d = c1 - c2;
+    return _getIntesectionNode(d, head1, head2);
+  }
+  else
+  {
+    d = c2 - c1;
+    return _getIntesectionNode(d, head2, head1);
+  }
+}
+ 
+/* function to get the intersection point of two linked
+   lists head1 and head2 where head1 has d more nodes than
+   head2 */
+int _getIntesectionNode(int d, struct Node* head1, struct Node* head2)
+{
+    int i;
+    struct Node* current1 = head1;
+    struct Node* current2 = head2;
+   
+    for(i = 0; i < d; i++)
+    {
+        if(current1 == NULL)
+        {  return -1; }
+        current1 = current1->next;
+    }
+   
+    while(current1 !=  NULL && current2 != NULL)
+    {
+        if(current1 == current2)
+          return current1->data;
+        current1= current1->next;
+        current2= current2->next;
+    }
+   
+    return -1;
+}
+
+// Add two linked lists : most significant node is first node
+
+struct node* addSameSize(Node* head1, Node* head2, int* carry)
+{
+    // Since the function assumes linked lists are of same size,
+    // check any of the two head pointers
+    if (head1 == NULL)
+        return NULL;
+ 
+    int sum;
+ 
+    // Allocate memory for sum node of current two nodes
+    Node* result = (Node *)malloc(sizeof(Node));
+ 
+    // Recursively add remaining nodes and get the carry
+    result->next = addSameSize(head1->next, head2->next, carry);
+ 
+    // add digits of current nodes and propagated carry
+    sum = head1->data + head2->data + *carry;
+    *carry = sum / 10;
+    sum = sum % 10;
+ 
+    // Assigne the sum to current node of resultant list
+    result->data = sum;
+ 
+    return result;
+}
+
+// This function is called after the smaller list is added to the bigger
+// lists's sublist of same size.  Once the right sublist is added, the carry
+// must be added toe left side of larger list to get the final result.
+void addCarryToRemaining(Node* head1, Node* cur, int* carry, Node** result)
+{
+    int sum;
+ 
+    // If diff. number of nodes are not traversed, add carry
+    if (head1 != cur)
+    {
+        addCarryToRemaining(head1->next, cur, carry, result);
+ 
+        sum = head1->data + *carry;
+        *carry = sum/10;
+        sum %= 10;
+ 
+        // add this node to the front of the result
+        push(result, sum);
+    }
+}
+
+// The main function that adds two linked lists represented by head1 and head2.
+// The sum of two lists is stored in a list referred by result
+void addList(Node* head1, Node* head2, Node** result)
+{
+    Node *cur;
+ 
+    // first list is empty
+    if (head1 == NULL)
+    {
+        *result = head2;
+        return;
+    }
+ 
+    // second list is empty
+    else if (head2 == NULL)
+    {
+        *result = head1;
+        return;
+    }
+ 
+    int size1 = getSize(head1);
+    int size2 = getSize(head2) ;
+ 
+    int carry = 0;
+ 
+    // Add same size lists
+    if (size1 == size2)
+        *result = addSameSize(head1, head2, &carry);
+ 
+    else
+    {
+        int diff = abs(size1 - size2);
+ 
+        // First list should always be larger than second list.
+        // If not, swap pointers
+        if (size1 < size2)
+            swapPointer(&head1, &head2);
+ 
+        // move diff. number of nodes in first list
+        for (cur = head1; diff--; cur = cur->next);
+ 
+        // get addition of same size lists
+        *result = addSameSize(cur, head2, &carry);
+ 
+        // get addition of remaining first list and carry
+        addCarryToRemaining(head1, cur, &carry, result);
+    }
+ 
+    // if some carry is still there, add a new node to the fron of
+    // the result list. e.g. 999 and 87
+    if (carry)
+        push(result, carry);
+}
+
+/* Adds contents of two linked lists and return the head node of resultant list */
+// least significant digit is first node
+struct Node* addTwoLists (struct Node* first, struct Node* second)
+{
+    struct Node* res = NULL; // res is head node of the resultant list
+    struct Node *temp, *prev = NULL;
+    int carry = 0, sum;
+ 
+    while (first != NULL || second != NULL) //while both lists exist
+    {
+        // Calculate value of next digit in resultant list.
+        // The next digit is sum of following things
+        // (i)  Carry
+        // (ii) Next digit of first list (if there is a next digit)
+        // (ii) Next digit of second list (if there is a next digit)
+        sum = carry + (first? first->data: 0) + (second? second->data: 0);
+ 
+        // update carry for next calulation
+        carry = (sum >= 10)? 1 : 0;
+ 
+        // update sum if it is greater than 10
+        sum = sum % 10;
+ 
+        // Create a new node with sum as data
+        temp = newNode(sum);
+ 
+        // if this is the first node then set it as head of the resultant list
+        if(res == NULL)
+            res = temp;
+        else // If this is not the first node then connect it to the rest.
+            prev->next = temp;
+ 
+        // Set prev for next insertion
+        prev  = temp;
+ 
+        // Move first and second pointers to next nodes
+        if (first) first = first->next;
+        if (second) second = second->next;
+    }
+ 
+    if (carry > 0)
+      temp->next = newNode(carry);
+ 
+    // return head of the resultant list
+    return res;
+}
+
+/*  Flatten Linked List 
+
+Let us create the following linked list
+
+        5 -> 10 -> 19 -> 28
+        |    |     |     |
+        V    V     V     V
+        7    20    22    35
+        |          |     |
+        V          V     V
+        8          50    40
+        |                |
+        V                V
+        30               45
+
+Flat : 5->7->8->10->19->20->22->28->30->35->40->45->50.
+
+Linked list node for flat :
+
+// A Linked List Node
+typedef struct Node
+{
+    int data;
+    struct Node *right;
+    struct Node *down;
+} Node;
+ 
+
+*/
+
+// The main function that flattens a given linked list
+Node* flatten (Node* root)
+{
+    // Base cases
+    if (root == NULL || root->right == NULL)
+        return root;
+ 
+    // Merge this list with the list on right side
+    return merge( root, flatten(root->right) );
 }
