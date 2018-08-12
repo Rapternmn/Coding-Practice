@@ -39,6 +39,8 @@ bool isMirror(struct Node* root1, struct Node* root2);
 
 bool isSymmetric(struct Node* root);
 
+int identicalTrees(struct node* a, struct node* b) ;
+
 int height(struct Node* node);
 
 void printGivenLevel(struct Node* root, int level);
@@ -65,3 +67,28 @@ int diameter(struct node * tree);
 int getLevelUtil(struct node *node, int data, int level);
 
 int getLevel(struct node *node, int data);
+
+int getLeafCount(struct node* node);
+
+void leftViewUtil(struct node *root, int level, int *max_level) ;
+
+void leftView(struct node *root) ;
+
+void bottomView(Node *root) ;
+
+void printVerticalOrder(Node* root) ;
+
+bool isBalanced(struct node *root) ;
+
+// Binary tree to DLL
+
+node* bintree2listUtil(node* root) ;
+
+node* bintree2list(node *root) ;
+
+
+// BST 
+
+int isBST(struct node* node) ;
+
+int isBSTUtil(struct node* node, int min, int max) ;
