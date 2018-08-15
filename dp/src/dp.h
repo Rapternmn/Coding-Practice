@@ -13,3 +13,5 @@ int minCost(int cost[R][C], int m, int n) ;
 int count_coin( int S[], int m, int n );
 
 int knapSack(int W, int wt[], int val[], int n);
+
+int longestPalSubstr( char *str ) ;
