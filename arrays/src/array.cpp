@@ -1,69 +1,109 @@
 #include "array.h"
 
-// TODO
-// Kadane’s Algorithm : Largest Sum Contiguous Subarray
-// Subarray with given sum
-// Sort an array of 0s, 1s and 2s
-// 
+// Sort stuff
 
-
-
-// Find the Missing Number
-
-// You are given a list of n-1 integers and these integers are in the range of 1 to n. 
-// There are no duplicates in list. One of the integers is missing in the list. 
-// Write an efficient code to find the missing integer.
-
-//Method 1 : (n)*(n-1)/2 - Total sum
-
-int getMissingNo (int a[], int n)
+void swap(int *a, int *b)
 {
-    int i, total;
-    total  = (n+1)*(n+2)/2;   
-    for ( i = 0; i< n; i++)
-       total -= a[i];
-    return total;
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
-
-//Method 2 : Xor method
-
-int getMissingNo_xor(int a[], int n)
-{
-    int i;
-    int x1 = a[0]; /* For xor of all the elements in array */
-    int x2 = 1; /* For xor of all the elements from 1 to n+1 */
-     
-    for (i = 1; i< n; i++)
-        x1 = x1^a[i];
-            
-    for ( i = 2; i <= n+1; i++)
-        x2 = x2^i;         
-    
-    return (x1^x2);
-}
-
-
-// Equilibrium index of an array is an index such that the sum of elements at lower indexes is equal to the sum of elements at higher indexes. 
-
-int equilibrium(int arr[], int n)
-{
-    int sum = 0; // initialize sum of whole array
-    int leftsum = 0; // initialize leftsum
  
-    /* Find sum of the whole array */
-    for (int i = 0; i < n; ++i)
-        sum += arr[i];
- 
-    for (int i = 0; i < n; ++i) 
+// Standard partition process of QuickSort().  It considers the last
+// element as pivot and moves all smaller element to left of it
+// and greater elements to right
+int partition(int arr[], int l, int r)
+{
+    int x = arr[r], i = l;
+    for (int j = l; j <= r - 1; j++)
     {
-        sum -= arr[i]; // sum is now right sum for index i
+        if (arr[j] <= x)
+        {
+            swap(&arr[i], &arr[j]);
+            i++;
+        }
+    }
+    swap(&arr[i], &arr[r]);
+    return i;
+}
+
+// Largest Sum Contiguous Subarray
+
+int maxSubArraySum(int a[], int size)
+{
+    int max_so_far = INT_MIN, max_ending_here = 0;
  
-        if (leftsum == sum)
-            return i;
+    for (int i = 0; i < size; i++)
+    {
+        max_ending_here = max_ending_here + a[i];
+        if (max_so_far < max_ending_here)
+            max_so_far = max_ending_here;
  
-        leftsum += arr[i];
+        if (max_ending_here < 0)
+            max_ending_here = 0;
+    }
+
+    return max_so_far;
+}
+
+// Find subarray with given sum | Set 1 (Nonnegative Numbers)
+
+int subArraySum(int arr[], int n, int sum)
+{
+    /* Initialize curr_sum as value of first element
+       and starting point as 0 */
+    int curr_sum = arr[0], start = 0, i;
+ 
+    /* Add elements one by one to curr_sum and if the curr_sum exceeds the
+       sum, then remove starting element */
+    for (i = 1; i <= n; i++)
+    {
+        // If curr_sum exceeds the sum, then remove the starting elements
+        while (curr_sum > sum && start < i-1)
+        {
+            curr_sum = curr_sum - arr[start];
+            start++;
+        }
+ 
+        // If curr_sum becomes equal to sum, then return true
+        if (curr_sum == sum)
+        {
+            printf ("Sum found between indexes %d and %d", start, i-1);
+            return 1;
+        }
+ 
+        // Add this element to curr_sum
+        if (i < n)
+          curr_sum = curr_sum + arr[i];
     }
  
-    /* If no equilibrium index found, then return 0 */
-    return -1;
+    // If we reach here, then no subarray
+    printf("No subarray found");
+    return 0;
 }
+
+// This function returns k'th smallest element in arr[l..r] using
+// QuickSort based method.  ASSUMPTION: ALL ELEMENTS IN ARR[] ARE DISTINCT
+int kthSmallest(int arr[], int l, int r, int k)
+{
+    // If k is smaller than number of elements in array
+    if (k > 0 && k <= r - l + 1)
+    {
+        // Partition the array around last element and get
+        // position of pivot element in sorted array
+        int pos = partition(arr, l, r);
+ 
+        // If position is same as k
+        if (pos-l == k-1)
+            return arr[pos];
+        if (pos-l > k-1)  // If position is more, recur for left subarray
+            return kthSmallest(arr, l, pos-1, k);
+ 
+        // Else recur for right subarray
+        return kthSmallest(arr, pos+1, r, k-pos+l-1);
+    }
+ 
+    // If k is more than number of elements in array
+    return INT_MAX;
+}
+

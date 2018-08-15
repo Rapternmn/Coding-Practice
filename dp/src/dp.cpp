@@ -320,3 +320,32 @@ int knapSack(int W, int wt[], int val[], int n)
  
    return K[n][W];
 }
+
+
+/*
+
+Input : agbdba
+
+Output : bdb
+
+    a    g    b    d    b     a
+
+a   1    1    1    1    1     1
+
+
+g        1    1         
+
+
+b             1    1         
+
+
+d                  1     1
+
+
+b                        1    1
+
+
+a                             1
+
+
+*/

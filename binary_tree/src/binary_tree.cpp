@@ -344,6 +344,29 @@ bool isSymmetric(struct Node* root)
 	return isMirror(root, root);
 }
 
+/* Given two trees, return true if they are
+ structurally identical */
+int identicalTrees(struct node* a, struct node* b)
+{
+    /*1. both empty */
+    if (a==NULL && b==NULL)
+        return 1;
+ 
+    /* 2. both non-empty -> compare them */
+    if (a!=NULL && b!=NULL)
+    {
+        return
+        (
+            a->data == b->data &&
+            identicalTrees(a->left, b->left) &&
+            identicalTrees(a->right, b->right)
+        );
+    }
+     
+    /* 3. one empty, one not -> false */
+    return 0;
+} 
+
 int height(struct node* node)
 {
    /* base case tree is empty */
@@ -496,9 +519,7 @@ void printSpiral(struct node *root)
     }
 }
 
-
 // Construction & Conversion :
-
 
 /* Recursive function to construct binary of size len from
    Inorder traversal in[] and Preorder traversal pre[].  Initial values
@@ -575,25 +596,24 @@ struct Node *findLCA(struct Node* root, int n1, int n2)
 /* Function to get diameter of a binary tree */
 int diameter(struct node * tree)
 {
-   /* base case where tree is empty */
-   if (tree == NULL)
-     return 0;
- 
-  /* get the height of left and right sub-trees */
-  int lheight = height(tree->left);
-  int rheight = height(tree->right);
- 
-  /* get the diameter of left and right sub-trees */
-  int ldiameter = diameter(tree->left);
-  int rdiameter = diameter(tree->right);
- 
-  /* Return max of following three
-   1) Diameter of left subtree
-   2) Diameter of right subtree
-   3) Height of left subtree + height of right subtree + 1 */
-  return max(lheight + rheight + 1, max(ldiameter, rdiameter));
-} 
+    /* base case where tree is empty */
+    if (tree == NULL)
+        return 0;
 
+    /* get the height of left and right sub-trees */
+    int lheight = height(tree->left);
+    int rheight = height(tree->right);
+
+    /* get the diameter of left and right sub-trees */
+    int ldiameter = diameter(tree->left);
+    int rdiameter = diameter(tree->right);
+
+    /* Return max of following three
+    1) Diameter of left subtree
+    2) Diameter of right subtree
+    3) Height of left subtree + height of right subtree + 1 */
+    return max(lheight + rheight + 1, max(ldiameter, rdiameter));
+} 
 
 /* Helper function for getLevel().  It returns level of the data if data is
    present in tree, otherwise returns 0.*/
@@ -618,3 +638,266 @@ int getLevel(struct node *node, int data)
 {
     return getLevelUtil(node,data,1);
 }
+
+int getLeafCount(struct node* node)
+{
+  if(node == NULL)       
+    return 0;
+  if(node->left == NULL && node->right==NULL)      
+    return 1;            
+  else
+    return getLeafCount(node->left) + getLeafCount(node->right);      
+}
+
+// Left view of the tree
+// Recursive function to print left view of a binary tree.
+void leftViewUtil(struct node *root, int level, int *max_level)
+{
+    // Base Case
+    if (root==NULL)  return;
+ 
+    // If this is the first node of its level
+    if (*max_level < level)
+    {
+        printf("%d\t", root->data);
+        *max_level = level;
+    }
+ 
+    // Recur for left and right subtrees
+    leftViewUtil(root->left, level+1, max_level);
+    leftViewUtil(root->right, level+1, max_level);
+}
+ 
+// A wrapper over leftViewUtil()
+void leftView(struct node *root)
+{
+    int max_level = 0;
+    leftViewUtil(root, 1, &max_level);
+}
+
+// Bottom view of the tree
+// Method that prints the bottom view.
+void bottomView(Node *root)
+{
+    if (root == NULL)
+        return;
+ 
+    // Initialize a variable 'hd' with 0
+    // for the root element.
+    int hd = 0;
+ 
+    // TreeMap which stores key value pair
+    // sorted on key value
+    map<int, int> m;
+ 
+    // Queue to store tree nodes in level
+    // order traversal
+    queue<Node *> q;
+ 
+    // Assign initialized horizontal distance
+    // value to root node and add it to the queue.
+    root->hd = hd;
+    q.push(root);  // In STL, push() is used enqueue an item
+ 
+    // Loop until the queue is empty (standard
+    // level order loop)
+    while (!q.empty())
+    {
+        Node *temp = q.front();
+        q.pop();   // In STL, pop() is used dequeue an item
+ 
+        // Extract the horizontal distance value
+        // from the dequeued tree node.
+        hd = temp->hd;
+ 
+        // Put the dequeued tree node to TreeMap
+        // having key as horizontal distance. Every
+        // time we find a node having same horizontal
+        // distance we need to replace the data in
+        // the map.
+        m[hd] = temp->data;
+ 
+        // If the dequeued node has a left child, add
+        // it to the queue with a horizontal distance hd-1.
+        if (temp->left != NULL)
+        {
+            temp->left->hd = hd-1;
+            q.push(temp->left);
+        }
+ 
+        // If the dequeued node has a right child, add
+        // it to the queue with a horizontal distance
+        // hd+1.
+        if (temp->right != NULL)
+        {
+            temp->right->hd = hd+1;
+            q.push(temp->right);
+        }
+    }
+ 
+    // Traverse the map elements using the iterator.
+    for (auto i = m.begin(); i != m.end(); ++i)
+        cout << i->second << " ";
+}
+
+// The main function to print vertical oder of a
+// binary tree with given root
+void printVerticalOrder(Node* root)
+{
+    // Base case
+    if (!root)
+        return;
+ 
+    // Create a map and store vertical oder in
+    // map using function getVerticalOrder()
+    map < int,vector<int> > m;
+    int hd = 0;
+ 
+    // Create queue to do level order traversal.
+    // Every item of queue contains node and
+    // horizontal distance.
+    queue<pair<Node*, int> > que;
+    que.push(make_pair(root, hd));
+ 
+     while (!que.empty())
+     {
+        // pop from queue front
+        pair<Node *,int> temp = que.front();
+        que.pop();
+        hd = temp.second;
+        Node* node = temp.first;
+ 
+        // insert this node's data in vector of hash
+        m[hd].push_back(node->key);
+ 
+        if (node->left != NULL)
+            que.push(make_pair(node->left, hd-1));
+        if (node->right != NULL)
+            que.push(make_pair(node->right, hd+1));
+    }
+ 
+    // Traverse the map and print nodes at
+    // every horigontal distance (hd)
+    map< int,vector<int> > :: iterator it;
+    for (it=m.begin(); it!=m.end(); it++)
+    {
+        for (int i=0; i<it->second.size(); ++i)
+            cout << it->second[i] << " ";
+        cout << endl;
+    }
+}
+
+// Is Height Balanced 
+
+bool isBalanced(struct node *root)
+{
+   int lh; /* for height of left subtree */
+   int rh; /* for height of right subtree */ 
+ 
+   /* If tree is empty then return true */
+   if(root == NULL)
+    return 1; 
+ 
+   /* Get the height of left and right sub trees */
+   lh = height(root->left);
+   rh = height(root->right);
+ 
+   if( abs(lh-rh) <= 1 &&
+       isBalanced(root->left) &&
+       isBalanced(root->right))
+     return 1;
+ 
+   /* If we reach here then tree is not height-balanced */
+   return 0;
+}
+
+/* This is the core function to convert Tree to list. This function follows
+  steps 1 and 2 of the above algorithm */
+node* bintree2listUtil(node* root)
+{
+    // Base case
+    if (root == NULL)
+        return root;
+ 
+    // Convert the left subtree and link to root
+    if (root->left != NULL)
+    {
+        // Convert the left subtree
+        node* left = bintree2listUtil(root->left);
+ 
+        // Find inorder predecessor. After this loop, left
+        // will point to the inorder predecessor
+        for (; left->right!=NULL; left=left->right);
+ 
+        // Make root as next of the predecessor
+        left->right = root;
+ 
+        // Make predecssor as previous of root
+        root->left = left;
+    }
+ 
+    // Convert the right subtree and link to root
+    if (root->right!=NULL)
+    {
+        // Convert the right subtree
+        node* right = bintree2listUtil(root->right);
+ 
+        // Find inorder successor. After this loop, right
+        // will point to the inorder successor
+        for (; right->left!=NULL; right = right->left);
+ 
+        // Make root as previous of successor
+        right->left = root;
+ 
+        // Make successor as next of root
+        root->right = right;
+    }
+ 
+    return root;
+}
+ 
+// The main function that first calls bintree2listUtil(), then follows step 3 
+//  of the above algorithm
+node* bintree2list(node *root)
+{
+    // Base case
+    if (root == NULL)
+        return root;
+ 
+    // Convert to DLL using bintree2listUtil()
+    root = bintree2listUtil(root);
+ 
+    // bintree2listUtil() returns root node of the converted
+    // DLL.  We need pointer to the leftmost node which is
+    // head of the constructed DLL, so move to the leftmost node
+    while (root->left != NULL)
+        root = root->left;
+ 
+    return (root);
+}
+
+/* Returns true if the given tree is a binary search tree 
+ (efficient version). */
+int isBST(struct node* node) 
+{ 
+  return(isBSTUtil(node, INT_MIN, INT_MAX)); 
+} 
+ 
+/* Returns true if the given tree is a BST and its 
+   values are >= min and <= max. */
+int isBSTUtil(struct node* node, int min, int max) 
+{ 
+  /* an empty tree is BST */
+  if (node==NULL) 
+     return 1;
+       
+  /* false if this node violates the min/max constraint */ 
+  if (node->data < min || node->data > max) 
+     return 0; 
+ 
+  /* otherwise check the subtrees recursively, 
+   tightening the min or max constraint */
+  return
+    isBSTUtil(node->left, min, node->data-1) &&  // Allow only distinct values
+    isBSTUtil(node->right, node->data+1, max);  // Allow only distinct values
+} 
