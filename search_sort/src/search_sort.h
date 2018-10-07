@@ -21,4 +21,3 @@ int randomPartition(int arr[], int l, int r) ;
 void quickSort(int arr[], int low, int high);
 
 int kthSmallest(int arr[], int l, int r, int k);
-

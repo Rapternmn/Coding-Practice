@@ -429,6 +429,79 @@ void printLevelOrder_queue(struct node* root)
     }
 }
 
+// Boundary Traversal
+
+void printBoundaryLeft(struct node* root)
+{
+    if(root)
+    {
+        if(root->left)
+        {
+            cout<<root->data;
+            printBoundaryLeft(root->left);
+        }
+        else if(root->right)
+        {
+            cout<<root->data;
+            printBoundaryLeft(root->right);
+        }
+    }
+}
+
+// A simple function to print leaf nodes of a binary tree 
+void printLeaves(struct node* root) 
+{ 
+    if ( root ) 
+    { 
+        printLeaves(root->left); 
+  
+        // Print it if it is a leaf node 
+        if ( !(root->left)  &&  !(root->right) ) 
+            printf("%d ", root->data); 
+  
+        printLeaves(root->right); 
+    } 
+} 
+
+void printBoundaryRight(struct node* root) 
+{ 
+    if (root) 
+    { 
+        if ( root->right ) 
+        { 
+            // to ensure bottom up order, first call for right 
+            //  subtree, then print this node 
+            printBoundaryRight(root->right); 
+            printf("%d ", root->data); 
+        } 
+        else if ( root->left ) 
+        { 
+            printBoundaryRight(root->left); 
+            printf("%d ", root->data); 
+        } 
+       // do nothing if it is a leaf node, this way we avoid 
+       // duplicates in output 
+    } 
+}
+
+void printBoundary (struct node* root) 
+{ 
+    if(root) 
+    { 
+        printf("%d ",root->data); 
+        
+        // Print the left boundary in top-down manner. 
+        printBoundaryLeft(root->left); 
+
+        // Print all leaf nodes 
+        printLeaves(root->left); 
+        printLeaves(root->right); 
+
+        // Print the right boundary in bottom-up manner 
+        printBoundaryRight(root->right); 
+    } 
+} 
+
 // Spiral print levelorder
 
 /* Function to print spiral traversal of a tree*/
@@ -876,6 +949,25 @@ node* bintree2list(node *root)
     return (root);
 }
 
+void mirror(struct Node* node)  
+{ 
+  if (node==NULL)  
+    return;   
+  else 
+  { 
+    struct Node* temp; 
+      
+    /* do the subtrees */
+    mirror(node->left); 
+    mirror(node->right); 
+  
+    /* swap the pointers in this node */
+    temp        = node->left; 
+    node->left  = node->right; 
+    node->right = temp; 
+  } 
+}  
+
 /* Returns true if the given tree is a binary search tree 
  (efficient version). */
 int isBST(struct node* node) 
@@ -901,3 +993,71 @@ int isBSTUtil(struct node* node, int min, int max)
     isBSTUtil(node->left, min, node->data-1) &&  // Allow only distinct values
     isBSTUtil(node->right, node->data+1, max);  // Allow only distinct values
 } 
+
+// Function to check if root to leaf path 
+// sum to a given number in BST 
+int checkThesum(struct Node *root, int path[], int i, int sum) 
+{ 
+    int sum1 = 0, x, y, j; 
+      
+    if(root == NULL) 
+        return 0; 
+          
+    // insert the data of a node 
+    path[i] = root->data; 
+      
+    // if the node is leaf 
+    // add all the element in array 
+    if(root->left==NULL&&root->right==NULL) 
+    { 
+        for(j = 0; j <= i; j++) 
+            sum1 = sum1 + path[j]; 
+              
+        // if the sum of root node to leaf  
+        // node data is equal then return 1 
+        if(sum == sum1) 
+            return 1; 
+        else
+            return 0; 
+    } 
+  
+    x = checkThesum(root->left, path, i+1, sum); 
+      
+    // if x is 1, it means the given sum is matched  
+    // with root to leaf node sum 
+    if(x==1)  
+        return 1; 
+    else
+    { 
+        return checkThesum(root->right, path, i+1, sum); 
+    } 
+} 
+
+bool hasPathSum(struct node* node, int sum) 
+{ 
+    /* return true if we run out of tree and sum==0 */
+    if (node == NULL) 
+    { 
+        return (sum == 0); 
+    } 
+
+    else
+    {
+        bool ans = 0;
+
+        /* otherwise check both subtrees */
+        int subSum = sum - node->data; 
+
+        /* If we reach a leaf node and sum becomes 0 then return true*/
+        if ( subSum == 0 && node->left == NULL && node->right == NULL ) 
+            return 1; 
+
+        if(node->left) 
+            ans = ans || hasPathSum(node->left, subSum); 
+        if(node->right) 
+            ans = ans || hasPathSum(node->right, subSum); 
+
+        return ans; 
+    } 
+}
+

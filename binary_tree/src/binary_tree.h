@@ -9,7 +9,7 @@ struct Node
     int key;
 };
 
-Node* newNode(int data);
+struct Node* newNode(int data);
 
 // All Traversals
 void printPostorder(struct Node* node);
@@ -26,7 +26,7 @@ void insert(struct Node* temp, int key);
 
 int findLevel(Node *root, int k, int level);
 
-Node *findDistUtil(Node* root, int n1, int n2, 
+struct Node *findDistUtil(Node* root, int n1, int n2, 
 					int &d1, int &d2, int &dist, int lvl) ;
 
 int findDistance(Node *root, int n1, int n2);
@@ -48,6 +48,14 @@ void printGivenLevel(struct Node* root, int level);
 void printLevelOrder(struct Node* root);
 
 void printLevelOrder_queue(struct Node* root);
+
+void printBoundary (struct node* root) ; // Boundary Traversal
+
+void printBoundaryLeft(struct node* root) ; 
+
+void printBoundaryRight(struct node* root) ;
+
+void printLeaves(struct node* root) ;
 
 // Spiral print level order
 void printSpiral(struct Node* root);
@@ -86,9 +94,22 @@ node* bintree2listUtil(node* root) ;
 
 node* bintree2list(node *root) ;
 
+// Create a mirror of binary tree
+
+void mirror(struct Node* node)  ;
 
 // BST 
 
 int isBST(struct node* node) ;
 
 int isBSTUtil(struct node* node, int min, int max) ;
+
+// BST : Root to leaf path sum
+
+int checkThesum(struct Node *root, int path[], int i, int sum) ;
+
+
+// Root to leaf path sum
+
+bool hasPathSum(struct node* node, int sum) ;
+

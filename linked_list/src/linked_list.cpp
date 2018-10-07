@@ -107,6 +107,56 @@ void deleteNode(struct Node **head_ref, int position)
 }
 
 
+// Deletes every k-th node and returns head 
+// of modified list. 
+Node *deleteKthNode(struct Node *head, int k) 
+{ 
+    // If linked list is empty 
+    if (head == NULL) 
+        return NULL; 
+  
+    if (k == 1) 
+    { 
+       freeList(head); 
+       return NULL; 
+    } 
+  
+    // Initialize ptr and prev before starting 
+    // traversal. 
+    struct Node *ptr = head, *prev = NULL; 
+  
+    // Traverse list and delete every k-th node 
+    int count = 0; 
+    while (ptr != NULL) 
+    { 
+        // increment Node count 
+        count++; 
+  
+        // check if count is equal to k 
+        // if yes, then delete current Node 
+        if (k == count) 
+        { 
+            // put the next of current Node in 
+            // the next of previous Node 
+            delete(prev->next); 
+            prev->next = ptr->next; 
+  
+            // set count = 0 to reach further 
+            // k-th Node 
+            count = 0; 
+        } 
+  
+        // update prev if count is not 0 
+        if (count != 0) 
+            prev = ptr; 
+  
+        ptr = prev->next; 
+    } 
+  
+    return head; 
+} 
+
+
 /* Function to delete the entire linked list */
 void deleteList(struct Node** head_ref)
 {
@@ -327,6 +377,69 @@ struct Node* SortedMerge(struct Node* a, struct Node* b)
     }
     return(result);
 }
+
+struct Node* SortedMergeReverse(Node *a, Node *b)
+{ 
+    // If both lists are empty 
+    if (a==NULL && b==NULL) return NULL; 
+  
+    // Initialize head of resultant list 
+    Node *res = NULL; 
+  
+    // Traverse both lists while both of then 
+    // have nodes. 
+    while (a != NULL && b != NULL) 
+    { 
+        // If a's current value is smaller or equal to 
+        // b's current value. 
+        if (a->key <= b->key) 
+        { 
+            // Store next of current Node in first list 
+            Node *temp = a->next; 
+  
+            // Add 'a' at the front of resultant list 
+            a->next = res; 
+            res = a; 
+  
+            // Move ahead in first list 
+            a = temp; 
+        } 
+  
+        // If a's value is greater. Below steps are similar 
+        // to above (Only 'a' is replaced with 'b') 
+        else
+        { 
+            Node *temp = b->next; 
+            b->next = res; 
+            res = b; 
+            b = temp; 
+        } 
+    } 
+  
+    // If second list reached end, but first list has 
+    // nodes. Add remaining nodes of first list at the 
+    // front of result list 
+    while (a != NULL) 
+    { 
+        Node *temp = a->next; 
+        a->next = res; 
+        res = a; 
+        a = temp; 
+    } 
+  
+    // If first list reached end, but second list has 
+    // node. Add remaining nodes of first list at the 
+    // front of result list 
+    while (b != NULL) 
+    { 
+        Node *temp = b->next; 
+        b->next = res; 
+        res = b; 
+        b = temp; 
+    } 
+  
+    return res; 
+} 
 
 int getIntesectionNode(struct Node* head1, struct Node* head2)
 {
@@ -563,3 +676,43 @@ Node* flatten (Node* root)
     // Merge this list with the list on right side
     return merge( root, flatten(root->right) );
 }
+
+
+bool detectLoop(struct Node *h) 
+{ 
+    unordered_set<Node *> s; 
+    while (h != NULL) 
+    { 
+        // If this node is already present 
+        // in hashmap it means there is a cycle 
+        // (Because you we encountering the 
+        // node for the second time). 
+        if (s.find(h) != s.end()) 
+            return true; 
+  
+        // If we are seeing the node for 
+        // the first time, insert it in hash 
+        s.insert(h); 
+  
+        h = h->next; 
+    } 
+  
+    return false; 
+} 
+
+int detectloop_floyd(struct Node *list) 
+{ 
+    struct Node  *slow_p = list, *fast_p = list; 
+   
+    while (slow_p && fast_p && fast_p->next ) 
+    { 
+        slow_p = slow_p->next; 
+        fast_p  = fast_p->next->next; 
+        if (slow_p == fast_p) 
+        { 
+           printf("Found Loop"); 
+           return 1; 
+        } 
+    } 
+    return 0; 
+} 

@@ -19,6 +19,8 @@ void append(struct Node** head_ref, int new_data);
 
 void deleteNode(struct Node **head_ref, int position);
 
+Node *deleteKthNode(struct Node *head, int k) ;
+
 void deleteList(struct Node** head_ref);
 
 int getCount(struct Node* head);
@@ -36,6 +38,10 @@ void printMiddle(struct Node *head);
 void rotate(struct Node **head_ref, int k);
 
 struct Node* SortedMerge(struct Node* a, struct Node* b) ;
+
+// Merge two sorted linked lists such that merged list is in reverse order
+
+struct Node* SortedMergeReverse(Node *a, Node *b) ;
 
 // Intersection of linkedlist
 
@@ -56,3 +62,10 @@ struct Node* addTwoLists (struct Node* first, struct Node* second);
 // Code : https://www.geeksforgeeks.org/flattening-a-linked-list/
 
 struct Node* flatten (Node* root);
+
+// Returns true if there is a loop in linked list 
+// else returns false. 
+
+bool detectLoop(struct Node *h) ; // Using Map
+
+int detectloop_floyd(struct Node *list) ; // Using Two pointers

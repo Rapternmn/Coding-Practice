@@ -16,3 +16,5 @@ int subArraySum(int arr[], int n, int sum) ;
 // Kth smallest 
 
 int kthSmallest(int arr[], int l, int r, int k);
+
+void rotateMatrix(int mat[][N]) ;
