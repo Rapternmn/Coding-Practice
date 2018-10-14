@@ -43,26 +43,26 @@ void insertAfter(struct Node* prev_node, int new_data)
 void append(struct Node** head_ref, int new_data)
 {
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
- 
+
     struct Node *last = *head_ref;  /* used in step 5*/
- 
+
     new_node->data  = new_data;
- 
+
     /* 3. This new node is going to be the last node, so make next of
           it as NULL*/
     new_node->next = NULL;
- 
+
     /* 4. If the Linked List is empty, then make the new node as head */
     if (*head_ref == NULL)
     {
        *head_ref = new_node;
        return;
     }
- 
+
     /* 5. Else traverse till the last node */
     while (last->next != NULL)
         last = last->next;
- 
+    
     /* 6. Change the next of last node */
     last->next = new_node;
     return;
@@ -715,4 +715,59 @@ int detectloop_floyd(struct Node *list)
         } 
     } 
     return 0; 
+} 
+
+
+struct Node *reverse (struct Node *head, int k) 
+{ 
+    struct Node* current = head; 
+    struct Node* next = NULL; 
+    struct Node* prev = NULL; 
+    int count = 0;    
+      
+    /*reverse first k nodes of the linked list */ 
+    while (current != NULL && count < k) 
+    { 
+        next  = current->next; 
+        current->next = prev; 
+        prev = current; 
+        current = next; 
+        count++; 
+    } 
+      
+    /* next is now a pointer to (k+1)th node  
+       Recursively call for the list starting from current. 
+       And make rest of the list as next of first node */
+    if (next !=  NULL) 
+       head->next = reverse(next, k);  
+  
+    /* prev is new head of the input list */
+    return prev; 
+} 
+
+void BinaryTree2DoubleLinkedList(node *root, node **head) 
+{ 
+    // Base case 
+    if (root == NULL) return; 
+  
+    // Initialize previously visited node as NULL. This is 
+    // static so that the same value is accessible in all recursive 
+    // calls 
+    static node* prev = NULL; 
+  
+    // Recursively convert left subtree 
+    BinaryTree2DoubleLinkedList(root->left, head); 
+  
+    // Now convert this node 
+    if (prev == NULL) 
+        *head = root; 
+    else
+    { 
+        root->left = prev; 
+        prev->right = root; 
+    } 
+    prev = root; 
+  
+    // Finally convert right subtree 
+    BinaryTree2DoubleLinkedList(root->right, head); 
 } 

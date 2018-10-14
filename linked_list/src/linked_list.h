@@ -9,29 +9,29 @@ struct Node
 	struct Node *next;
 };
 
-void printList(struct Node *n);
+void printList(struct Node *n);									// Done
 
-void push(struct Node** head_ref, int new_data);
+void push(struct Node** head_ref, int new_data);				// Done
 
-void insertAfter(struct Node* prev_node, int new_data);
+void insertAfter(struct Node* prev_node, int new_data);			// Done
 
-void append(struct Node** head_ref, int new_data);
+void append(struct Node** head_ref, int new_data);				// Done
 
-void deleteNode(struct Node **head_ref, int position);
+void deleteNode(struct Node **head_ref, int position);			// Done
 
-Node *deleteKthNode(struct Node *head, int k) ;
+Node *deleteKthNode(struct Node *head, int k) ;					
 
-void deleteList(struct Node** head_ref);
+void deleteList(struct Node** head_ref);						// Done
 
-int getCount(struct Node* head);
+int getCount(struct Node* head);								// Done
 
-int GetNth(struct Node* head, int index);
+int GetNth(struct Node* head, int index);						// Done
 
-void printNthFromLast(struct Node *head, int n);
+void printNthFromLast(struct Node *head, int n);				// Done
 
-void recursiveReverse(struct Node** head_ref);
+void recursiveReverse(struct Node** head_ref);					
 
-void reverse(struct Node** head_ref);
+void reverse(struct Node** head_ref);							// Done
 
 void printMiddle(struct Node *head);
 
@@ -56,7 +56,7 @@ void addCarryToRemaining(Node* head1, Node* cur, int* carry, Node** result);
 void addList(Node* head1, Node* head2, Node** result);
 
 //least significant digit is first node
-struct Node* addTwoLists (struct Node* first, struct Node* second); 
+struct Node* addTwoLists (struct Node* first, struct Node* second);
 
 // Flatten 
 // Code : https://www.geeksforgeeks.org/flattening-a-linked-list/
@@ -69,3 +69,7 @@ struct Node* flatten (Node* root);
 bool detectLoop(struct Node *h) ; // Using Map
 
 int detectloop_floyd(struct Node *list) ; // Using Two pointers
+
+struct Node *reverse (struct Node *head, int k) ;  // Reverse Nodes in Set of K -- Nodes
+
+void BinaryTree2DoubleLinkedList(node *root, node **head) ; // Convert Binary tree to DLL
