@@ -87,6 +87,26 @@ int lcs( char *X, char *Y, int m, int n )
 }
 
 
+// Largest Sum Contiguous Subarray, Kadane Algo
+
+int maxSubArraySum(int a[], int size)
+{
+    int max_so_far = INT_MIN, max_ending_here = 0;
+ 
+    for (int i = 0; i < size; i++)
+    {
+        max_ending_here = max_ending_here + a[i];
+
+        if (max_so_far < max_ending_here)
+            max_so_far = max_ending_here;
+ 
+        if (max_ending_here < 0)
+            max_ending_here = 0;
+    }
+
+    return max_so_far;
+}
+
 // Edit distance
 
 /*
@@ -349,3 +369,187 @@ a                             1
 
 
 */
+
+
+
+/// Maximum size square sub-matrix with all 1s
+
+
+/*
+
+Matrix : Mat[M][M]
+
+
+0   0   1   1   1
+
+1   0   1   1   1
+
+0   1   1   1   1
+
+1   0   1   1   1
+
+
+DP Mat : Mat[M+1][N+1]
+
+    0   1   2   3   4   5
+
+0   0   0   0   0   0   0
+
+1   0   0   0   1   1   1
+
+2   0   1   0   1   2   2
+
+3   0   0   1   1   2   3
+
+4   0   1   0   1   2   3
+
+*/
+
+void printMaxSubSquare(bool M[R][C]) 
+{ 
+  int i,j; 
+  int S[R][C]; 
+  int max_of_s, max_i, max_j;  
+    
+  /* Set first column of S[][]*/
+  for(i = 0; i < R; i++) 
+      S[i][0] = M[i][0]; 
+    
+  /* Set first row of S[][]*/ 
+  for(j = 0; j < C; j++) 
+      S[0][j] = M[0][j]; 
+        
+  /* Construct other entries of S[][]*/
+  for(i = 1; i < R; i++) 
+  { 
+      for(j = 1; j < C; j++) 
+      { 
+      if(M[i][j] == 1)  
+          S[i][j] = min(S[i][j-1], S[i-1][j],  
+                          S[i-1][j-1]) + 1; 
+      else
+          S[i][j] = 0; 
+      }  
+  }  
+    
+  /* Find the maximum entry, and indexes of maximum entry  
+      in S[][] */
+  max_of_s = S[0][0]; max_i = 0; max_j = 0; 
+  for(i = 0; i < R; i++) 
+  { 
+      for(j = 0; j < C; j++) 
+      { 
+      if(max_of_s < S[i][j]) 
+      { 
+          max_of_s = S[i][j]; 
+          max_i = i;  
+          max_j = j; 
+      }     
+      }                 
+  }     
+    
+  printf("Maximum size sub-matrix is: \n"); 
+  for(i = max_i; i > max_i - max_of_s; i--) 
+  { 
+      for(j = max_j; j > max_j - max_of_s; j--) 
+      { 
+      printf("%d ", M[i][j]); 
+      }  
+      printf("\n"); 
+  } 
+
+}
+
+
+// Max Size Rectangle :
+
+// Returns area of the largest rectangle with all 1s in A[][] 
+int maxRectangle(int A[][C]) 
+{ 
+    // Calculate area for first row and initialize it as 
+    // result 
+    int result = maxHist(A[0]); 
+  
+    // iterate over row to find maximum rectangular area 
+    // considering each row as histogram 
+    for (int i = 1; i < R; i++) 
+    { 
+  
+        for (int j = 0; j < C; j++) 
+  
+            // if A[i][j] is 1 then add A[i -1][j] 
+            if (A[i][j]) A[i][j] += A[i - 1][j]; 
+  
+  
+        // Update result if area with current row (as last row) 
+        // of rectangle) is more 
+        result = max(result, maxHist(A[i])); 
+    } 
+  
+    return result; 
+} 
+
+/* Returns the product of max product subarray.
+   Assumes that the given array always has a subarray 
+   with product more than 1 */
+int maxSubarrayProduct(int arr[], int n) 
+{ 
+    // max positive product ending at the current position 
+    int max_ending_here = 1; 
+  
+    // min negative product ending at the current position 
+    int min_ending_here = 1; 
+  
+    // Initialize overall max product 
+    int max_so_far = 1; 
+  
+    /* Traverse through the array. Following values are 
+       maintained after the i'th iteration: 
+       max_ending_here is always 1 or some positive product 
+                       ending with arr[i] 
+       min_ending_here is always 1 or some negative product  
+                       ending with arr[i] */
+    for (int i = 0; i < n; i++) 
+    { 
+        /* If this element is positive, update max_ending_here.  
+           Update min_ending_here only if min_ending_here is  
+           negative */
+        if (arr[i] > 0) 
+        { 
+            max_ending_here = max_ending_here*arr[i]; 
+            min_ending_here = min (min_ending_here * arr[i], 1); 
+        } 
+  
+        /* If this element is 0, then the maximum product  
+           cannot end here, make both max_ending_here and  
+           min_ending_here 0 
+           Assumption: Output is alway greater than or equal  
+                       to 1. */
+        else if (arr[i] == 0) 
+        { 
+            max_ending_here = 1; 
+            min_ending_here = 1; 
+        } 
+  
+        /* If element is negative. This is tricky 
+           max_ending_here can either be 1 or positive.  
+           min_ending_here can either be 1 or negative. 
+           next min_ending_here will always be prev.  
+           max_ending_here * arr[i] next max_ending_here 
+           will be 1 if prev min_ending_here is 1, otherwise  
+           next max_ending_here will be prev min_ending_here * 
+           arr[i] */
+        else
+        { 
+            int temp = max_ending_here; 
+            max_ending_here = max (min_ending_here * arr[i], 1); 
+            min_ending_here = temp * arr[i]; 
+        } 
+  
+        // update max_so_far, if needed 
+        if (max_so_far <  max_ending_here) 
+          max_so_far  =  max_ending_here; 
+    } 
+  
+    return max_so_far; 
+} 

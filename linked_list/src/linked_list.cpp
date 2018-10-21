@@ -677,6 +677,34 @@ Node* flatten (Node* root)
     return merge( root, flatten(root->right) );
 }
 
+// A utsility function to merge two sorted linked lists 
+Node* merge( Node* a, Node* b ) 
+{ 
+    // If first list is empty, the second list is result 
+    if (a == NULL) 
+        return b; 
+  
+    // If second list is empty, the second list is result 
+    if (b == NULL) 
+        return a; 
+  
+    // Compare the data members of head nodes of both lists 
+    // and put the smaller one in result 
+    Node* result; 
+    if (a->data < b->data) 
+    { 
+        result = a; 
+        result->down = merge( a->down, b ); 
+    } 
+    else
+    { 
+        result = b; 
+        result->down = merge( a, b->down ); 
+    } 
+  
+    return result; 
+} 
+
 
 bool detectLoop(struct Node *h) 
 { 
@@ -770,4 +798,202 @@ void BinaryTree2DoubleLinkedList(node *root, node **head)
   
     // Finally convert right subtree 
     BinaryTree2DoubleLinkedList(root->right, head); 
+} 
+
+/* Function to pairwise swap elements of a linked list */
+void pairWiseSwap(struct Node *head) 
+{ 
+    struct Node *temp = head; 
+  
+    /* Traverse further only if there are at-least two nodes left */
+    while (temp != NULL && temp->next != NULL) 
+    { 
+        /* Swap data of node with its next node's data */
+        swap(&temp->data, &temp->next->data); 
+  
+        /* Move temp by 2 for the next pair */
+        temp = temp->next->next; 
+    } 
+} 
+
+/* Function to pairwise swap elements of a linked list */
+void pairWiseSwap_inplace(struct Node **head) 
+{ 
+    // If linked list is empty or there is only one node in list 
+    if (*head == NULL || (*head)->next == NULL) 
+        return; 
+  
+    // Initialize previous and current pointers 
+    struct Node *prev = *head; 
+    struct Node *curr = (*head)->next; 
+  
+    *head = curr;  // Change head before proceeeding 
+  
+    // Traverse the list 
+    while (true) 
+    { 
+        struct Node *next = curr->next; 
+        curr->next = prev; // Change next of current as previous node 
+  
+        // If next NULL or next is the last node 
+        if (next == NULL || next->next == NULL) 
+        { 
+            prev->next = next; 
+            break; 
+        } 
+  
+        // Change next of previous to next next 
+        prev->next = next->next; 
+  
+        // Update previous and curr 
+        prev = next; 
+        curr = prev->next; 
+    }
+
+}
+
+
+/* The function removes duplicates from a sorted list */
+void removeDuplicates(struct Node* head) 
+{ 
+    /* Pointer to traverse the linked list */
+    struct Node* current = head; 
+  
+    /* Pointer to store the next pointer of a node to be deleted*/
+    struct Node* next_next;  
+    
+    /* do nothing if the list is empty */
+    if (current == NULL)  
+       return;  
+  
+    /* Traverse the list till last node */
+    while (current->next != NULL)  
+    { 
+       /* Compare current node with next node */
+       if (current->data == current->next->data)  
+       { 
+           /* The sequence of steps is important*/               
+           next_next = current->next->next; 
+           free(current->next); 
+           current->next = next_next;   
+       } 
+       else /* This is tricky: only advance if no deletion */
+       { 
+          current = current->next;  
+       } 
+    } 
+} 
+
+
+/* This function detects and removes loop in the list 
+  If loop was there in the list then it returns 1, 
+  otherwise returns 0 */
+int detectAndRemoveLoop(struct Node *list) 
+{ 
+    struct Node  *slow_p = list, *fast_p = list; 
+  
+    while (slow_p && fast_p && fast_p->next) 
+    { 
+        slow_p = slow_p->next; 
+        fast_p  = fast_p->next->next; 
+  
+        /* If slow_p and fast_p meet at some point then there 
+           is a loop */
+        if (slow_p == fast_p) 
+        { 
+            removeLoop(slow_p, list); 
+  
+            /* Return 1 to indicate that loop is found */
+            return 1; 
+        } 
+    } 
+  
+    /* Return 0 to indeciate that ther is no loop*/
+    return 0; 
+} 
+  
+/* Function to remove loop. 
+ loop_node --> Pointer to one of the loop nodes 
+ head -->  Pointer to the start node of the linked list */
+void removeLoop(struct Node *loop_node, struct Node *head) 
+{ 
+   struct Node *ptr1; 
+   struct Node *ptr2; 
+  
+   /* Set a pointer to the beging of the Linked List and 
+      move it one by one to find the first node which is 
+      part of the Linked List */
+   ptr1 = head; 
+   while (1) 
+   { 
+     /* Now start a pointer from loop_node and check if it ever 
+       reaches ptr2 */
+     ptr2 = loop_node; 
+     while (ptr2->next != loop_node && ptr2->next != ptr1) 
+         ptr2 = ptr2->next; 
+  
+     /* If ptr2 reahced ptr1 then there is a loop. So break the 
+        loop */
+     if (ptr2->next == ptr1) 
+        break; 
+  
+     /* If ptr2 did't reach ptr1 then try the next node after ptr1 */
+     ptr1 = ptr1->next; 
+   } 
+  
+   /* After the end of loop ptr2 is the last node of the loop. So 
+     make next of ptr2 as NULL */
+   ptr2->next = NULL; 
+} 
+
+
+// This function clones a given linked list 
+// in O(1) space 
+Node* clone(Node *start) 
+{ 
+    Node* curr = start, *temp; 
+  
+    // insert additional node after 
+    // every node of original list 
+    while (curr) 
+    { 
+        temp = curr->next; 
+  
+        // Inserting node 
+        curr->next = new Node(curr->data); 
+        curr->next->next = temp; 
+        curr = temp; 
+    } 
+  
+    curr = start; 
+  
+    // adjust the random pointers of the 
+    // newly added nodes 
+    while (curr) 
+    { 
+        if(curr->next) 
+            curr->next->random = curr->random ? curr->random->next : curr->random; 
+  
+        // move to the next newly added node by 
+        // skipping an original node 
+        curr = curr->next?curr->next->next:curr->next; 
+    } 
+  
+    Node* original = start, *copy = start->next; 
+  
+    // save the start of copied linked list 
+    temp = copy; 
+  
+    // now separate the original list and copied list 
+    while (original && copy) 
+    { 
+        original->next = 
+         original->next? original->next->next : original->next; 
+  
+        copy->next = copy->next?copy->next->next:copy->next; 
+        original = original->next; 
+        copy = copy->next; 
+    } 
+  
+    return temp; 
 } 

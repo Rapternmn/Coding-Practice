@@ -33,11 +33,11 @@ void recursiveReverse(struct Node** head_ref);
 
 void reverse(struct Node** head_ref);							// Done
 
-void printMiddle(struct Node *head);
+void printMiddle(struct Node *head);							// Done
 
-void rotate(struct Node **head_ref, int k);
+void rotate(struct Node **head_ref, int k);						// Done
 
-struct Node* SortedMerge(struct Node* a, struct Node* b) ;
+struct Node* SortedMerge(struct Node* a, struct Node* b) ;		// Done
 
 // Merge two sorted linked lists such that merged list is in reverse order
 
@@ -73,3 +73,23 @@ int detectloop_floyd(struct Node *list) ; // Using Two pointers
 struct Node *reverse (struct Node *head, int k) ;  // Reverse Nodes in Set of K -- Nodes
 
 void BinaryTree2DoubleLinkedList(node *root, node **head) ; // Convert Binary tree to DLL
+
+// Pairwise Swap
+
+void pairWiseSwap(struct Node *head) ; 	// Swap Data
+
+void pairWiseSwap_inplace(struct Node **head) ;
+
+// Remove Duplicates
+
+void removeDuplicates(struct Node* head) ;
+
+// Detect and Remove Loop
+
+int detectAndRemoveLoop(struct Node *list) ;
+
+void removeLoop(struct Node *loop_node, struct Node *head) ;
+
+// Clone a Linked List
+
+Node* clone(Node *start) ;
