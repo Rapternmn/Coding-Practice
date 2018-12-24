@@ -788,11 +788,11 @@ void BinaryTree2DoubleLinkedList(node *root, node **head)
   
     // Now convert this node 
     if (prev == NULL) 
-        *head = root; 
+        *head = root;
     else
     { 
-        root->left = prev; 
-        prev->right = root; 
+        root->left = prev;
+        prev->right = root;
     } 
     prev = root; 
   
@@ -916,15 +916,15 @@ int detectAndRemoveLoop(struct Node *list)
  loop_node --> Pointer to one of the loop nodes 
  head -->  Pointer to the start node of the linked list */
 void removeLoop(struct Node *loop_node, struct Node *head) 
-{ 
+{
    struct Node *ptr1; 
    struct Node *ptr2; 
   
    /* Set a pointer to the beging of the Linked List and 
       move it one by one to find the first node which is 
       part of the Linked List */
-   ptr1 = head; 
-   while (1) 
+   ptr1 = head;
+   while (1)
    { 
      /* Now start a pointer from loop_node and check if it ever 
        reaches ptr2 */

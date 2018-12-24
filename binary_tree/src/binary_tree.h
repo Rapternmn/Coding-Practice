@@ -108,8 +108,26 @@ int isBSTUtil(struct node* node, int min, int max) ;
 
 int checkThesum(struct Node *root, int path[], int i, int sum) ;
 
+// Root to leaf path sum :
 
-// Root to leaf path sum
+// Root to leaf path sum equal to a given number
+
+// Given a binary tree and a number, return true if the tree has a root-to-leaf path such 
+// that adding up all the values along the path equals the given number. 
+// Return false if no such path can be found. 
 
 bool hasPathSum(struct node* node, int sum) ;
 
+// Sum of all the numbers that are formed from root to leaf paths
+
+// Returns sum of all root to leaf paths. The first parameter is root 
+// of current subtree, the second parameter is value of the number formed 
+// by nodes from root to this node 
+int treePathsSumUtil(struct node *root, int val) ;
+
+// A wrapper function over treePathsSumUtil() 
+int treePathsSum(struct node *root) ;
+
+// Flatten Linked List
+
+void flatten(struct Node* root) ;

@@ -43,6 +43,23 @@ Array 3 Pointers
 Remove Duplicates from Sorted Array II
 Minimize the absolute difference
 
+Tree Data Structure :
+
+Inorder Traversal									// Done
+Recover Binary Search Tree
+Least Common Ancestor								// Done
+Construct Binary Tree From Inorder And Preorder
+Flatten Binary Tree to Linked List 					// Done
+Preorder Traversal									// Done
+Max Depth of Binary Tree							// Done
+Binary Tree From Inorder And Postorder
+Sum Root to Leaf Numbers 							// Done
+Postorder Traversal									
+Populate Next Right Pointers Tree
+Path Sum											// Done
+Next Pointer Binary Tree
+Root to Leaf Paths With Sum
+
 Linked Lists :
 
 Swap List Nodes in pairs					// Done
@@ -81,24 +98,6 @@ Anagrams									// Done
 Fraction
 Copy List
 Largest Continuous Sequence Zero Sum		// Done
-
-Tree Data Structure :
-
-Inorder Traversal									// Done
-Recover Binary Search Tree
-Least Common Ancestor								// Done
-Construct Binary Tree From Inorder And Preorder
-Flatten Binary Tree to Linked List
-Preorder Traversal									// Done
-Max Depth of Binary Tree							// Done
-Binary Tree From Inorder And Postorder
-Sum Root to Leaf Numbers
-Postorder Traversal									
-Populate Next Right Pointers Tree
-Path Sum
-Next Pointer Binary Tree
-Root to Leaf Paths With Sum
-
 
 Dynamic Programming :
 
@@ -139,6 +138,37 @@ Todo Misc :
 Design Patterns -> Tushar Roy Videos
 Data Science
 
+OOPS
+
 Prepare : Tell me about your self, Why change the Job, Why Microsoft
+Ask questions : Make a List of questions to ask
 
 // Maximum occurence of a num
+
+1) What all is expected from me being a part of Microsoft AI & R
+2) What kind of problems do you solve daily.
+
+// Why microsoft, why do you want to apply :
+
+Microsoft is a dream company. It has been involved in several Software and AI innovations
+and I would like to contribute in it in any small/big ways.
+
+// Why change the jobs :
+
+I like to surround myself with bright people and learn and work with senior Leaders.
+Unfortunately I dont see that kind of an environment at Jio. It has been a great journey,
+I have recieved good projects and support from the management, but if given an opportunity,
+I would like to work with microsoft.
+
+Revise :
+Build Tree, Tree construction
+Left View
+Check The sum
+Fatten
+
+Linked List
+
+Add LL
+Flatten Linked List
+BinaryTree2DoubleLinkedList
+Clone

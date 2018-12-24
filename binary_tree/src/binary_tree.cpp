@@ -237,7 +237,6 @@ Node *findDistUtil(Node* root, int n1, int n2, int &d1,
 
 	if(left_lca != NULL)
 		return left_lca;
-	
 	else
 		return right_lca;
 }
@@ -311,7 +310,7 @@ void deletion(struct Node* root, int key)
 	{
 		temp = q.front();
 		q.pop();
-
+        
 		if(temp->key == key)
 			key_node = temp;
 
@@ -930,7 +929,7 @@ node* bintree2listUtil(node* root)
 }
  
 // The main function that first calls bintree2listUtil(), then follows step 3 
-//  of the above algorithm
+// of the above algorithm
 node* bintree2list(node *root)
 {
     // Base case
@@ -951,21 +950,21 @@ node* bintree2list(node *root)
 
 void mirror(struct Node* node)  
 { 
-  if (node==NULL)  
-    return;   
-  else 
-  { 
-    struct Node* temp; 
-      
-    /* do the subtrees */
-    mirror(node->left); 
-    mirror(node->right); 
-  
-    /* swap the pointers in this node */
-    temp        = node->left; 
-    node->left  = node->right; 
-    node->right = temp; 
-  } 
+    if (node==NULL)  
+        return;   
+    else 
+    { 
+        struct Node* temp; 
+          
+        /* do the subtrees */
+        mirror(node->left); 
+        mirror(node->right); 
+
+        /* swap the pointers in this node */
+        temp        = node->left; 
+        node->left  = node->right; 
+        node->right = temp; 
+    } 
 }  
 
 /* Returns true if the given tree is a binary search tree 
@@ -1061,3 +1060,70 @@ bool hasPathSum(struct node* node, int sum)
     } 
 }
 
+// Returns sum of all root to leaf paths. The first parameter is root 
+// of current subtree, the second parameter is value of the number formed 
+// by nodes from root to this node 
+int treePathsSumUtil(struct node *root, int val) 
+{ 
+    // Base case 
+    if (root == NULL)  return 0; 
+  
+    // Update val 
+    val = (val*10 + root->data); 
+  
+    // if current node is leaf, return the current value of val 
+    if (root->left==NULL && root->right==NULL) 
+       return val; 
+  
+    // recur sum of values for left and right subtree 
+    return treePathsSumUtil(root->left, val) + 
+           treePathsSumUtil(root->right, val); 
+} 
+  
+// A wrapper function over treePathsSumUtil() 
+int treePathsSum(struct node *root) 
+{ 
+    // Pass the initial value as 0 as there is nothing above root 
+    return treePathsSumUtil(root, 0); 
+} 
+
+// Function to convert binary tree into 
+// linked list by altering the right node 
+// and making left node point to NULL 
+void flatten(struct Node* root) 
+{ 
+    // base condition- return if root is NULL 
+    // or if it is a leaf node 
+    if (root == NULL || root->left == NULL && 
+                        root->right == NULL) { 
+        return; 
+    } 
+  
+    // if root->left exists then we have  
+    // to make it root->right 
+    if (root->left != NULL) 
+    {
+        // move left recursively 
+        flatten(root->left); 
+
+        // store the node root->right 
+        struct Node* tmpRight = root->right; 
+        root->right = root->left; 
+        root->left = NULL; 
+
+        // find the position to insert 
+        // the stored value    
+        struct Node* t = root->right; 
+        while (t->right != NULL) 
+        { 
+            t = t->right; 
+        } 
+  
+        // insert the stored value 
+        t->right = tmpRight; 
+    } 
+  
+    // now call the same function 
+    // for root->right 
+    flatten(root->right); 
+} 

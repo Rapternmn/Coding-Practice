@@ -1,5 +1,38 @@
 #include "strings.h"
 
+void swap(char *a,char *b) 
+{ 
+    if( *a == *b ) 
+        return; 
+    *a^=*b; 
+    *b^=*a; 
+    *a^=*b; 
+} 
+
+void rev(string& s,int l,int r) 
+{ 
+    while(l<r) 
+        swap(&s[l++],&s[r--]); 
+} 
+
+int bsearch (string& s,int l,int r,int key) 
+{ 
+    int index = -1; 
+    while(l<=r) 
+    { 
+        int mid = l+(r-l)/2; 
+        if(s[mid]<=key) 
+            r=mid-1; 
+        else
+        { 
+            l=mid+1; 
+            if(index = -1 || s[index]<=s[mid]) 
+                index = mid; 
+        } 
+    } 
+return index; 
+} 
+
 /*
 
 Algorithm:
