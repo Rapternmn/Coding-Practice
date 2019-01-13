@@ -27,6 +27,17 @@ int partition(int arr[], int l, int r)
     return i;
 }
 
+void quickSort(int A[], int si, int ei) 
+{ 
+    int pi;    /* Partitioning index */
+    if(si < ei) 
+    { 
+        pi = partition(A, si, ei); 
+        quickSort(A, si, pi - 1); 
+        quickSort(A, pi + 1, ei); 
+    } 
+} 
+
 // Largest Sum Contiguous Subarray, Kadane Algo
 
 int maxSubArraySum(int a[], int size)
@@ -359,3 +370,19 @@ int maxLen(int arr[], int n)
 
     return max_len; 
 }
+
+bool isSubset(int arr1[], int arr2[], int m, int n) 
+{ 
+    int i = 0; 
+    
+    quickSort(arr1, 0, m-1); 
+    for (i=0; i<n; i++) 
+    { 
+        if (binarySearch(arr1, 0, m-1, arr2[i]) == -1) 
+           return 0; 
+    } 
+      
+    /* If we reach here then all elements of arr2[]  
+      are present in arr1[] */
+    return 1; 
+} 

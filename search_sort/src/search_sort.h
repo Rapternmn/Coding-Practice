@@ -30,3 +30,14 @@ int findPivot(int arr[], int low, int high) ;
 
 // Median of two sorted arrays with different sizes
 double findMedianSortedArrays(int *a, int n,  int *b, int m) ;
+
+void sort012(int a[], int arr_size) ;
+
+/* This function returns  
+median of ar1[] and ar2[]. 
+Assumptions in this function: 
+Both ar1[] and ar2[]  
+are sorted arrays 
+Both have n elements */
+int getMedian(int ar1[], int ar2[], int n) ;
+

@@ -9,3 +9,10 @@ using namespace std;
 void wordBreak(string str) ;
 
 int getPairsCount(int arr[], int n, int sum) ;
+
+// Largest Rectangular Area in a Histogram | Set 2
+
+// The main function to find the maximum rectangular  
+// area under given histogram with n bars 
+
+int getMaxArea(int hist[], int n) 

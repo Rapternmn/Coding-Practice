@@ -90,6 +90,12 @@ int detectAndRemoveLoop(struct Node *list) ;
 
 void removeLoop(struct Node *loop_node, struct Node *head) ;
 
+// Count Loop nodes
+
+int countNodes(struct Node *n) ;
+
+int countNodesinLoop(struct Node *list) ;
+
 // Clone a Linked List
 
 Node* clone(Node *start) ;

@@ -6,6 +6,8 @@ void swap(int *a, int *b);
 
 int partition(int arr[], int l, int r);
 
+void quickSort(int A[], int si, int ei) ;
+
 // Largest Sum Contiguous Subarray
 // Kadane's Algorithm
 
@@ -48,3 +50,9 @@ bool isSafe(int grid[N][N], int row, int col, int num) ;
 // Returns Length of the required subarray 
 
 int maxLen(int arr[], int n) ;
+
+// C program to find whether an array 
+// is subset of another array 
+// (Use Sorting and Binary Search)
+
+bool isSubset(int arr1[], int arr2[], int m, int n) ;

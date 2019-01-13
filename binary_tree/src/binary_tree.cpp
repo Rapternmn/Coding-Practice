@@ -292,7 +292,6 @@ void deletDeepest(struct Node *root,struct Node * d_node)
             else
                 q.push(temp->left);
         }
-
 	}
 }
 
