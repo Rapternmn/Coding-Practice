@@ -20,7 +20,6 @@ int longestPalSubstr( char *str ) ;
 
 // Max Size Square :
 
-
 void printMaxSubSquare(bool M[R][C])  ;
 
 // Max Size rectangle :
@@ -29,3 +28,14 @@ void printMaxSubSquare(bool M[R][C])  ;
 int maxRectangle(int A[][C]) ;
 
 int maxSubarrayProduct(int arr[], int n) ;
+
+// Optimal Strategy to win game
+
+int optimalStrategyOfGame(int* arr, int n) ;
+
+// Google 
+
+// Returns count of possible paths to reach cell at 
+// row number m and column  number n from the topmost  
+// leftmost cell (cell at 1, 1) 
+int numberOfPaths(int m, int n) ;

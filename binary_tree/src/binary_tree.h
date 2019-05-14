@@ -104,6 +104,9 @@ int isBST(struct node* node) ;
 
 int isBSTUtil(struct node* node, int min, int max) ;
 
+// Returns count of nodes in BST in range [low, high] 
+int getCount(node *root, int low, int high) 
+
 // BST : Root to leaf path sum
 
 int checkThesum(struct Node *root, int path[], int i, int sum) ;

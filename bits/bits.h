@@ -9,3 +9,7 @@ int countSetBits(int n) ;
 // by this function. 
 void copySetBits(unsigned &x, unsigned y, 
 				unsigned l, unsigned r) ;
+
+// Google 
+
+int sumBitDifferences(int arr[], int n) ;

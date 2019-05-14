@@ -181,6 +181,72 @@ bool isMajority(int a[], int size, int cand)
         return 0;
 } 
 
+int appearsNBy3(int arr[], int n) 
+{ 
+    int count1 = 0, count2 = 0; 
+    int first=INT_MAX    , second=INT_MAX  ; 
+  
+    for (int i = 0; i < n; i++) 
+    { 
+        // if this element is previously seen,  
+        // increment count1. 
+        if (first == arr[i]) 
+            count1++; 
+  
+        // if this element is previously seen,  
+        // increment count2. 
+        else if (second == arr[i]) 
+            count2++; 
+      
+        else if (count1 == 0) { 
+            count1++; 
+            first = arr[i]; 
+        } 
+  
+        else if (count2 == 0) { 
+            count2++; 
+            second = arr[i]; 
+        } 
+  
+        // if current element is different from 
+        // both the previously seen variables,  
+        // decrement both the counts. 
+        else { 
+            count1--; 
+            count2--; 
+        } 
+    } 
+  
+    count1 = 0; 
+    count2 = 0; 
+  
+    // Again traverse the array and find the 
+    // actual counts. 
+    for (int i = 0; i < n; i++) { 
+        if (arr[i] == first) 
+            count1++; 
+  
+        else if (arr[i] == second) 
+            count2++; 
+    } 
+  
+    if (count1 > n / 3) 
+        return first; 
+  
+    if (count2 > n / 3) 
+        return second; 
+  
+    return -1; 
+} 
+  
+int main() 
+{ 
+    int arr[] = { 1, 2, 3, 1, 1 }; 
+    int n = sizeof(arr) / sizeof(arr[0]); 
+    cout << appearsNBy3(arr, n) << endl; 
+    return 0; 
+} 
+
 // Maximum Area Histogram
 
 // The main function to find the maximum rectangular  
@@ -385,4 +451,140 @@ bool isSubset(int arr1[], int arr2[], int m, int n)
     /* If we reach here then all elements of arr2[]  
       are present in arr1[] */
     return 1; 
+} 
+
+// Google 
+
+// This function sorts arr[0..n-1] in wave form, i.e.,  
+// arr[0] >= arr[1] <= arr[2] >= arr[3] <= arr[4] >= arr[5].. 
+void sortInWave(int arr[], int n) 
+{ 
+    // Sort the input array 
+    sort(arr, arr+n); 
+  
+    // Swap adjacent elements 
+    for (int i=0; i<n-1; i += 2) 
+        swap(&arr[i], &arr[i+1]); 
+} 
+
+// O(n) solution
+
+// This function sorts arr[0..n-1] in wave form, i.e., 
+// arr[0] >= arr[1] <= arr[2] >= arr[3] <= arr[4] >= arr[5] .... 
+
+void sortInWave(int arr[], int n) 
+{ 
+    // Traverse all even elements 
+    for (int i = 0; i < n; i+=2) 
+    { 
+        // If current even element is smaller than previous 
+        if (i>0 && arr[i-1] > arr[i] ) 
+            swap(&arr[i], &arr[i-1]); 
+  
+        // If current even element is smaller than next 
+        if (i<n-1 && arr[i] < arr[i+1] ) 
+            swap(&arr[i], &arr[i + 1]); 
+    } 
+} 
+
+// An interval has start time and end time 
+struct Interval 
+{ 
+    int start, end; 
+}; 
+  
+// Compares two intervals according to their staring time. 
+// This is needed for sorting the intervals using library 
+// function std::sort(). See http://goo.gl/iGspV 
+bool compareInterval(Interval i1, Interval i2) 
+{ 
+    return (i1.start < i2.start); 
+} 
+
+// The main function that takes a set of intervals, merges 
+// overlapping intervals and prints the result 
+void mergeIntervals(Interval arr[], int n) 
+{ 
+    // Test if the given set has at least one interval 
+    if (n <= 0) 
+        return; 
+  
+    // Create an empty stack of intervals 
+    stack<Interval> s; 
+  
+    // sort the intervals in increasing order of start time 
+    sort(arr, arr+n, compareInterval); 
+  
+    // push the first interval to stack 
+    s.push(arr[0]);
+  
+    // Start from the next interval and merge if necessary 
+    for (int i = 1 ; i < n; i++) 
+    { 
+        // get interval from stack top 
+        Interval top = s.top(); 
+  
+        // if current interval is not overlapping with stack top, 
+        // push it to the stack 
+        if (top.end < arr[i].start) 
+            s.push(arr[i]); 
+  
+        // Otherwise update the ending time of top if ending of current 
+        // interval is more 
+        else if (top.end < arr[i].end) 
+        { 
+            top.end = arr[i].end; 
+            s.pop(); 
+            s.push(top); 
+        } 
+    } 
+  
+    // Print contents of stack 
+    cout << "\n The Merged Intervals are: "; 
+    while (!s.empty()) 
+    { 
+        Interval t = s.top(); 
+        cout << "[" << t.start << "," << t.end << "] "; 
+        s.pop(); 
+    } 
+    return; 
+} 
+
+/* For a given array arr[], returns the maximum j – i such that 
+    arr[j] > arr[i] */
+int maxIndexDiff(int arr[], int n) 
+{ 
+    int maxDiff; 
+    int i, j; 
+  
+    int *LMin = (int *)malloc(sizeof(int)*n); 
+    int *RMax = (int *)malloc(sizeof(int)*n); 
+  
+   /* Construct LMin[] such that LMin[i] stores the minimum value 
+       from (arr[0], arr[1], ... arr[i]) */
+    LMin[0] = arr[0]; 
+    for (i = 1; i < n; ++i) 
+        LMin[i] = min(arr[i], LMin[i-1]); 
+  
+    /* Construct RMax[] such that RMax[j] stores the maximum value 
+       from (arr[j], arr[j+1], ..arr[n-1]) */
+    RMax[n-1] = arr[n-1]; 
+    for (j = n-2; j >= 0; --j) 
+        RMax[j] = max(arr[j], RMax[j+1]); 
+  
+    /* Traverse both arrays from left to right to find optimum j - i 
+        This process is similar to merge() of MergeSort */
+    i = 0, j = 0, maxDiff = -1; 
+    while (j < n && i < n) 
+    { 
+        if (LMin[i] < RMax[j]) 
+        { 
+            maxDiff = max(maxDiff, j-i); 
+            j = j + 1; 
+        } 
+        else
+            i = i+1; 
+    } 
+  
+    return maxDiff; 
 } 

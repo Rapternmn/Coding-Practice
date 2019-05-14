@@ -21,7 +21,7 @@ int kthSmallest(int arr[], int l, int r, int k);
 
 void rotateMatrix(int mat[][N]) ;
 
-// Find Majority Element
+// Find Majority Element // Moore’s Voting algorithm.
 
 int findCandidate(int a[], int size) ;
 
@@ -56,3 +56,11 @@ int maxLen(int arr[], int n) ;
 // (Use Sorting and Binary Search)
 
 bool isSubset(int arr1[], int arr2[], int m, int n) ;
+
+// Google
+
+void sortInWave(int arr[], int n) ;
+
+void mergeIntervals(Interval arr[], int n) ;
+
+int maxIndexDiff(int arr[], int n) ;

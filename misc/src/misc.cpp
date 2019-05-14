@@ -142,3 +142,229 @@ int getMaxArea(int hist[], int n)
   
     return max_area; 
 } 
+
+
+int climbStairs(int n) 
+{
+        
+        int total[n+1];
+        
+        if(n == 1)
+            return 1;
+        if(n == 2)
+            return 2;
+        else if(n>2)
+        {
+            total[0] = 0;
+            total[1] = 1;
+            total[2] = 2;
+        }
+        
+        for(int i = 3; i <= n; i++)
+            total[i] = total[i-1] + total[i-2] ;
+            
+        return total[n];
+        
+}
+
+int sumBitDifferences(int arr[], int n) 
+{ 
+    int ans = 0;  // Initialize result 
+  
+    // traverse over all bits 
+    for (int i = 0; i < 32; i++) 
+    { 
+        // count number of elements with i'th bit set 
+        int count = 0; 
+        for (int j = 0; j < n; j++) 
+            if ( (arr[j] & (1 << i)) ) 
+                count++; 
+  
+        // Add "count * (n - count) * 2" to the answer 
+        ans += (count * (n - count) * 2); 
+    } 
+  
+    return ans; 
+} 
+
+void rotateMatrix(int mat[][N]) 
+{ 
+    // Consider all squares one by one 
+    for (int x = 0; x < N / 2; x++) 
+    { 
+        // Consider elements in group of 4 in  
+        // current square 
+        for (int y = x; y < N-x-1; y++) 
+        { 
+            // store current cell in temp variable 
+            int temp = mat[x][y]; 
+  
+            // move values from right to top 
+            mat[x][y] = mat[y][N-1-x]; 
+  
+            // move values from bottom to right 
+            mat[y][N-1-x] = mat[N-1-x][N-1-y]; 
+  
+            // move values from left to bottom 
+            mat[N-1-x][N-1-y] = mat[N-1-y][x]; 
+  
+            // assign temp to left 
+            mat[N-1-y][x] = temp; 
+        } 
+    } 
+} 
+
+// function to print triplets with 0 sum 
+void findTriplets(int arr[], int n) 
+{ 
+    bool found = false; 
+  
+    // sort array elements 
+    sort(arr, arr+n); 
+  
+    for (int i=0; i<n-1; i++) 
+    { 
+        // initialize left and right 
+        int l = i + 1; 
+        int r = n - 1; 
+        int x = arr[i]; 
+        while (l < r) 
+        { 
+            if (x + arr[l] + arr[r] == 0) 
+            { 
+                // print elements if it's sum is zero 
+                printf("%d %d %d\n", x, arr[l], arr[r]); 
+                l++; 
+                r--; 
+                found = true; 
+            } 
+  
+            // If sum of three elements is less 
+            // than zero then increment in left 
+            else if (x + arr[l] + arr[r] < 0) 
+                l++; 
+  
+            // if sum is greater than zero than 
+            // decrement in right side 
+            else
+                r--; 
+        } 
+    } 
+  
+    if (found == false) 
+        cout << " No Triplet Found" << endl; 
+} 
+
+// Celebrity Problem
+
+// Person with 2 is celebrity 
+bool MATRIX[N][N] = {{0, 0, 1, 0}, 
+                    {0, 0, 1, 0}, 
+                    {0, 0, 0, 0}, 
+                    {0, 0, 1, 0}}; 
+  
+bool knows(int a, int b) 
+{ 
+    return MATRIX[a][b]; 
+} 
+  
+// Returns -1 if celebrity 
+// is not present. If present, 
+// returns id (value from 0 to n-1). 
+int findCelebrity(int n) 
+{ 
+    // Handle trivial  
+    // case of size = 2 
+  
+    stack<int> s; 
+  
+    int C; // Celebrity 
+  
+    // Push everybody to stack 
+    for (int i = 0; i < n; i++) 
+        s.push(i); 
+  
+    // Extract top 2 
+    int A = s.top(); 
+    s.pop(); 
+    int B = s.top(); 
+    s.pop(); 
+  
+    // Find a potential celevrity 
+    while (s.size() > 1) 
+    { 
+        if (knows(A, B)) 
+        { 
+            A = s.top(); 
+            s.pop(); 
+        } 
+        else
+        { 
+            B = s.top(); 
+            s.pop(); 
+        } 
+    } 
+  
+    // Potential candidate? 
+    C = s.top(); 
+    s.pop(); 
+  
+    // Last candidate was not  
+    // examined, it leads one  
+    // excess comparison (optimize) 
+    if (knows(C, B)) 
+        C = B; 
+  
+    if (knows(C, A)) 
+        C = A; 
+  
+    // Check if C is actually 
+    // a celebrity or not 
+    for (int i = 0; i < n; i++) 
+    { 
+        // If any person doesn't  
+        // know 'a' or 'a' doesn't  
+        // know any person, return -1 
+        if ( (i != C) && 
+                (knows(C, i) ||  
+                 !knows(i, C)) ) 
+            return -1; 
+    } 
+  
+    return C; 
+} 
+
+// Returns id of celebrity 
+int findCelebrity(int n) 
+{ 
+    // Initialize two pointers  
+    // as two corners 
+    int a = 0; 
+    int b = n - 1; 
+  
+    // Keep moving while  
+    // the two pointers 
+    // don't become same.  
+    while (a < b) 
+    { 
+        if (knows(a, b)) 
+            a++; 
+        else
+            b--; 
+    } 
+  
+    // Check if a is actually 
+    // a celebrity or not 
+    for (int i = 0; i < n; i++) 
+    { 
+        // If any person doesn't  
+        // know 'a' or 'a' doesn't 
+        // know any person, return -1 
+        if ( (i != a) && 
+                (knows(a, i) ||  
+                !knows(i, a)) ) 
+            return -1; 
+    } 
+  
+    return a; 
+} 

@@ -41,3 +41,13 @@ are sorted arrays
 Both have n elements */
 int getMedian(int ar1[], int ar2[], int n) ;
 
+int getMedian(int ar1[], int ar2[], int n, int m)  ;
+
+// Find first and last positions of an element in a sorted array
+
+int first(int arr[], int low, int high, int x, int n) ;
+
+int last(int arr[], int low, int high, int x, int n) ;
+
+// Returns number of times x occurs in arr[0..n-1] 
+int countOccurrences(int arr[], int n, int x) ;  // Also can use first and last index found method
